@@ -7,13 +7,12 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4  # Checkout the repository code
+    - name: Checkout Repository
+      uses: actions/checkout@v4  # Checkout the repository code
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1  # Set up Docker Buildx (optional but recommended)
@@ -21,19 +20,22 @@ jobs:
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.murali54321 }}  # Use GitHub secrets for security
-        password: ${{ secrets.Murali@54321 }}
+        username: ${{ secrets.DOCKER_USERNAME }}  # Use GitHub Secrets for security
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Pull the base Docker image
-      run: docker pull murali54321/python-calculator  # Pull the base image from Docker Hub
+      run: docker pull murali54321/python-calculator || true  # Avoid failure if image doesn't exist
+
+    - name: Set timestamp for image versioning
+      run: echo "TIMESTAMP=$(date +%s)" >> $GITHUB_ENV
 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag murali54321/python-calculator:$(date +%s)
+      run: docker build . --file Dockerfile --tag murali54321/python-calculator:${{ env.TIMESTAMP }}
 
     - name: Tag the Docker image as latest
-      run: docker tag murali54321/python-calculator:$(date +%s) murali54321/python-calculator:latest
+      run: docker tag murali54321/python-calculator:${{ env.TIMESTAMP }} murali54321/python-calculator:latest
 
-    - name: Push the Docker image to Docker Hub
+    - name: Push the Docker images to Docker Hub
       run: |
-        docker push murali54321/python-calculator:$(date +%s)
+        docker push murali54321/python-calculator:${{ env.TIMESTAMP }}
         docker push murali54321/python-calculator:latest
