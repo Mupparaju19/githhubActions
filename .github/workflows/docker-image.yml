@@ -27,7 +27,7 @@ jobs:
       run: docker pull murali54321/python-calculator || true  # Avoid failure if image doesn't exist
 
     - name: Set timestamp for image versioning
-      run: echo "TIMESTAMP=$(date +%s)" >> $GITHUB_ENV
+      run: echo "TIMESTAMP=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag murali54321/python-calculator:${{ env.TIMESTAMP }}
@@ -39,3 +39,4 @@ jobs:
       run: |
         docker push murali54321/python-calculator:${{ env.TIMESTAMP }}
         docker push murali54321/python-calculator:latest
+ 
