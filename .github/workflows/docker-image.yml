@@ -21,8 +21,8 @@ jobs:
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}  # Use GitHub secrets for security
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        username: ${{ secrets.murali54321 }}  # Use GitHub secrets for security
+        password: ${{ secrets.Murali@54321 }}
 
     - name: Pull the base Docker image
       run: docker pull murali54321/python-calculator  # Pull the base image from Docker Hub
