@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calculator-deployment
+  labels:
+    app: calculator
+spec:
+  replicas: 3  # Number of pods you want to run
+  selector:
+    matchLabels:
+      app: calculator
+  template:
+    metadata:
+      labels:
+        app: calculator
+    spec:
+      containers:
+        - name: calculator
+          image: murali54321/python-calculator:v1  # Your Docker image
+          ports:
+            - containerPort: 8081  # The port your app listens on inside the container
+
